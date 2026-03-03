@@ -19,6 +19,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
+
             'login' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
@@ -29,10 +30,16 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
-        $user = User::create([
-            'login' => $request->login,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = new User();
+        $user->name = $request->get('login');
+        $user->login = $request->get('login');
+        $user->password = Hash::make($request->password);
+        $user->save();
+//        $user = User::create([
+//            'name' => $request->get('login'),
+//            'login' => $request->login,
+//            'password' => Hash::make($request->password),
+//        ]);
 
         auth()->login($user);
 
