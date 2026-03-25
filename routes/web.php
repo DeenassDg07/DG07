@@ -1,6 +1,8 @@
 <?php
 // routes/web.php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
@@ -24,4 +26,16 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/update/{post}', [CategoryController::class, 'updateShowForm'])->name('categories.updateForm');
+    });
+
+
+    Route::prefix('posts')->group(function () {
+       Route::get('/', [PostController::class, 'index'])->name('posts.index');
+       Route::get('/{post}', [PostController::class, 'show'])->name('posts.show');
+    });
 });

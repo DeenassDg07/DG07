@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,9 +18,13 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $userIds = User::all()->pluck('id')->toArray();
+        $categoryIds = Category::all()->pluck('id')->toArray();
         return [
             'title' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph()
+            'description' => $this->faker->paragraph(),
+            'user_id' => $this->faker->randomElement($userIds),
+            'category_id' => $this->faker->randomElement($categoryIds),
         ];
     }
 }
